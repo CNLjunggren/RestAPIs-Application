@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "OpenWeather API Hub";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>OpenWeather API Hub:</h2>
+
+<div class="container-fluid">
+    @using (Html.BeginForm("GetCurrent", "OpenWeather", FormMethod.Post, new { id = "location" }))
+    {
+        @Html.ValidationSummary()
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            City Name form will be entered here
+        </div>
+        <div class="form-group">
+            Country form will be entered here.
+        </div>
+
+        <input type="submit" class="btn btn-primary" value="Get Current Weather" />
+    }
+</div>

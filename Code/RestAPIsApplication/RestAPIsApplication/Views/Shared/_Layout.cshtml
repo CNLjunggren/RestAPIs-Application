@@ -1,0 +1,33 @@
+﻿<!doctype html>
+
+<style>
+
+</style>
+
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Optional JavaScript (Modernizr, jQuery, Popper, Bootstrap JS) -->
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.slim.min.js"></script>
+    <script scr="~/Scripts/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <!--Title set to individual body's title via ViewBag.-->
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    @RenderPage("_Header.cshtml")
+    <div>
+        @RenderBody()
+    </div>
+    @RenderPage("_Footer.cshtml")
+</body>
+</html>
