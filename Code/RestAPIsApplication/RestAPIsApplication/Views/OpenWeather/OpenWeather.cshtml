@@ -1,4 +1,4 @@
-﻿
+﻿@model RestAPIsApplication.Models.LocationModel
 @{
     ViewBag.Title = "OpenWeather API Hub";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,16 +7,37 @@
 <h2>OpenWeather API Hub:</h2>
 
 <div class="container-fluid">
-    @using (Html.BeginForm("GetCurrent", "OpenWeather", FormMethod.Post, new { id = "location" }))
+    @using (Html.BeginForm("CurrentResult", "OpenWeather", FormMethod.Post, new { id = "location" }))
     {
-        @Html.ValidationSummary()
         @Html.AntiForgeryToken()
 
         <div class="form-group">
-            City Name form will be entered here
+            @Html.LabelFor(model => model.City, "City Name")
+            @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
         </div>
         <div class="form-group">
-            Country form will be entered here.
+            @Html.LabelFor(model => model.State, "State Name (US only)")
+            @Html.TextBoxFor(model => model.State, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Country, "Country: ")
+            US
+            @Html.RadioButtonFor(model => model.Country, "us")
+            UK
+            @Html.RadioButtonFor(model => model.Country, "uk")
+            Germany
+            @Html.RadioButtonFor(model => model.Country, "germany")
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Units, "Units: ")
+            Fahrenheit
+            @Html.RadioButtonFor(model => model.Units, 0)
+            Celsius
+            @Html.RadioButtonFor(model => model.Units, 1)
+            Kelvin
+            @Html.RadioButtonFor(model => model.Units, 2)
         </div>
 
         <input type="submit" class="btn btn-primary" value="Get Current Weather" />

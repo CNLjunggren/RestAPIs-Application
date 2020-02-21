@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace RestAPIsApplication.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home
+        /// <summary>
+        ///     Controller method that returns the Home (Index) Page to the user.
+        /// </summary>
+        /// <returns> View() </returns>
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
