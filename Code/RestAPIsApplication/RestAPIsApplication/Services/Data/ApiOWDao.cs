@@ -1,25 +1,34 @@
-﻿using RestAPIsApplication.Models;
+﻿using Newtonsoft.Json;
+using RestAPIsApplication.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text;
+using System.Xml;
 
 namespace RestAPIsApplication.Services.Data
 {
     /// <summary>
-    ///     Credit to Yogi S. from Code Project for code functionality relating to creating a request to the OpenWeather API through HttpWebRequest & HttpWebResponse.
+    ///     Credit to Yogi S. from Code Project for code functionality in regards to:
+    ///     - Creating a request to the OpenWeather API via HttpWebRequest & HttpWebResponse.
+    ///     - Using StreamReader to read the resulting API response and convert it into a string to parse.
     ///     Source: https://www.codeproject.com/Articles/1180283/How-to-Implement-OpenWeatherMap-API-in-ASP-NET-MVC
     /// </summary>
     public class ApiOWDao
     {
+        // Instanciates a Weather Model variable for use in this DAO service class.
+        private WeatherModel weather;
+
         /// <summary>
-        ///     A method called upon by other methods to construct the correct HttpWebRequest for theit appropiate call. Currently only supports the "Current
+        ///     A method called upon by other methods to construct the correct HttpWebRequest for their appropiate call. Currently only supports the "Current
         ///     Weather" api.
         /// </summary>
         /// <param name="location"></param>
         /// <returns> string apiRequest </returns>
         private HttpWebRequest GetRequestCurr(LocationModel location)
         {
-            // Instantiaction of the OpenWeathers api key used for the application and a string variable for the appropiate measureing system to be used.
+            // Instantiaction of the OpenWeathers api key used for the application and other variables for the unit format.
             string apiKey = "3a98eaf5333fd5b9ff4e579e89ab1d7d";
             string unitsCall;
 
@@ -53,39 +62,35 @@ namespace RestAPIsApplication.Services.Data
         /// </summary>
         /// <param name="location"></param>
         /// <returns> string apiResponse </returns>
-        public string GetCurrent(LocationModel location)
+        public WeatherModel GetCurrent(LocationModel location)
         {
             // Instanciates the apiResponse variable to be returned.
             string apiResponse = "";
 
-            // Attempts to create an api request call by calling another method and then using this HttpWebRequest to call the api and attempt to read its 
-            // response.
+            /* Attempts to create an api request call by calling the GetRequestCurr, then uses the resulting HttpWebRequest to call the api and attempt to read its 
+             * response. Once the API's response has been read, the weather model is set to a deserialized version of the API response by utilizing Newtonsoft's
+             * JsonConvert method (Newtonsoft.Json package). */
             try
             {
                 // Creates a Http web request based on the api call for the current weather.
                 HttpWebRequest apiRequest = GetRequestCurr(location);
 
+                // Uses the generated HttpWebResponse to read the OpenWeather API response and save it to a variable, then closes the reader.
                 using (HttpWebResponse response = apiRequest.GetResponse() as HttpWebResponse)
                 {
                     StreamReader reader = new StreamReader(response.GetResponseStream());
                     apiResponse = reader.ReadToEnd();
-
                     reader.Close();
                 }
+                //Sets the instanciated weather model equal to the deserialized API response string.
+                weather = JsonConvert.DeserializeObject<WeatherModel>(apiResponse);
             }
-            // Catches WebException errors and converts the api response to the appropiate error message. Will be changed in the future. 
+            // Catches WebException errors and throws it upwards to the OpenWeather Controller class for handling.
             catch (WebException webExcept)
             {
-                Console.WriteLine(webExcept);
-                apiResponse = "webExcept 404";
+                throw webExcept;
             }
-            // Catches and throws all other errors as needed.
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw e;
-            }
-            return apiResponse;
+            return weather;
         }
     }
 }

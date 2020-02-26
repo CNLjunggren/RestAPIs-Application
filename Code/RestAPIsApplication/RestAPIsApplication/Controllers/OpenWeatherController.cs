@@ -1,13 +1,14 @@
 ﻿using RestAPIsApplication.Models;
 using RestAPIsApplication.Services.Business;
+using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Web.Mvc;
 
 namespace RestAPIsApplication.Controllers
 {
     public class OpenWeatherController : Controller
     {
-        // TODO: Change the CurrentResult class so it can return a WeatherModel instead of a simple string containing the api's response.
-
         /// <summary>
         ///     Controller method that returns the Current Weather Page to the user.
         /// </summary>
@@ -21,43 +22,42 @@ namespace RestAPIsApplication.Controllers
         /// <summary>
         ///     ActionResult HttpPost method that takes the entered information from the user's current weather request and;
         ///     - Checks if the data is valid.
-        ///     - If the data is valid, calls the OpenWeathers api service class and passes the location data for the api call to use.
+        ///         - If the data is valid, calls the OpenWeathers api service class and passes the location data for the api call to use.
+        ///         - Else, redirects the user to the same page so error messages are shown to the user.
+        ///     - Instanciates the OpenWeather API service class and calls the CallCurrent method within this service class to:
+        ///         - Call the DAO Service which makes a request of weather information to the "Current Weather" API from OpenWeather.
+        ///         - Return a complete model of the api's response (OR) throws a corresponding error back up to this class.
+        ///     - Shows the user the Current Weather request's data (OR) displays an error message on the page and prompts the user to try again.
         /// </summary>
         /// <param name="location"></param>
-        /// <returns> RedirectToAction("OpenWeather", "OpenWeather") </returns>
+        /// <returns> View(apiResponse) </returns>
         [HttpPost]
         public ActionResult CurrentResult(LocationModel location)
         {
-            // Checks if the submitted current weather data request is invalid data. If invalid data is found, the user is redirected to the same page so error
-            // the user is shown data validation error messages.
+            /* Checks if the submitted current weather data request is invalid data. If invalid data is found, the user is redirected to the same page so error
+             * the user is shown data validation error messages. */
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("OpenWeather", "OpenWeather");
             }
-
-            // Instanciates the OpenWeather api service class and calls the method to set the returning api resonse to a string message.
+            // Instanciates the OpenWeather api service class.
             ApiOWService service = new ApiOWService();
-            string apiResponse = service.CallCurrent(location);
 
-            // Checks if any error messages or lack of data is found instead of the expected api response string. Temporary portion of code for when only a string
-            // is returned from the api call.
-            if (apiResponse != null)
+            /* Attempts to call the business service in order for the application to call the OpenWeather API and retrieve the results of the current
+             * location requested by the user. */
+            try
             {
-                // Dedicated response catch for if there was a web exception when the call was sent.
-                if (apiResponse == "webExcept 404")
-                {
-                    apiResponse = "The entered city and/or country does not exist. Please enter a valid city/country and try again.";
-                    return View((object)apiResponse);
-                }
-                // If no errors or null api response string was found, returns the results view to the user with the appropiate string.
-                else
-                    return View((object)apiResponse);
+                WeatherModel apiResponse = service.CallCurrent(location);
+                /* If no exceptions are thrown then the API's weather icon url is created using the weather response's icon #. This response weather model is then
+                 * returned along the CurrentResult view. */
+                apiResponse.IconUrl = "http://openweathermap.org/img/wn/" + apiResponse.Weather[0].Icon.ToString() + ".png";
+                return View(apiResponse);
             }
-            // Dedicated response catch for if the api response string returns as null.
-            else
+            catch(WebException wE)
             {
-                apiResponse = "No current weather data available.";
-                return View((object)apiResponse);
+                ViewBag.Error = "Current Weather could not be found at the given location. Please ensure you entered a valid location and try again.";
+                Console.WriteLine(ViewBag.Error);
+                return View();
             }
         }
     }

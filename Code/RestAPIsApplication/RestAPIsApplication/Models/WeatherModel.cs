@@ -1,121 +1,111 @@
-﻿namespace RestAPIsApplication.Models
+﻿using System.Collections.Generic;
+
+namespace RestAPIsApplication.Models
 {
+    /// /// <summary>
+    ///     Main weather model class for weather models that instanciates each variable and helper class variable that makes up a OpenWeather "Current 
+    ///     Weather" API response.
+    /// 
+    ///     Credit to Yogi S. from Code Project for overall model structure for easy deserialization of OpenWeather API request results.
+    ///     Source: https://www.codeproject.com/Articles/1180283/How-to-Implement-OpenWeatherMap-API-in-ASP-NET-MVC
+    /// </summary>
     public class WeatherModel
     {
-        // Instanciation & getters/setters for each variable in the location model.This also will contain data validation rules for each variable in the future.
-        // Tester method for now until the chosen parameters are decided on for this app. (Each is found within the response currently).
-        
-        // Weather: Type
-        public int WeatherTypeID { get; set; }
-        public string WeatherType { get; set; }
-        public string WeatherDesc { get; set; }
-        public string WeatherIcon { get; set; }
-        // Weather: Main Data Types
+        public Coord Coord { get; set; }
+        public List<Weather> Weather { get; set; }
+        public string Base { get; set; }
+        public Main Main { get; set; }
+        public int Visibility { get; set; }
+        public Wind Wind { get; set; }
+        public Clouds Clouds { get; set; }
+        public Rain Rain { get; set; }
+        public Snow Snow { get; set; }
+        public int Dt { get; set; }
+        public Sys Sys { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Cod { get; set; }
+        public string IconUrl { get; set; }
+    }
+
+    /// <summary>
+    ///     Helper model class that is utilized by the main class to store coordinates from the API response.
+    /// </summary>
+    public class Coord
+    {
+        public double Lon { get; set; }
+        public double Lat { get; set; }
+    }
+
+    /// <summary>
+    ///     Helper model class that is utilized by the main class to store basic weather data from the API response.
+    /// </summary>
+    public class Weather
+    {
+        public int ID { get; set; }
+        public string Main { get; set; }
+        public string Description { get; set; }
+        public string Icon { get; set; }
+    }
+
+    /// <summary>
+    ///     Helper model class that is utilized by the main class to store temperature, pressure, and humidity data from the API response.
+    /// </summary>
+    public class Main
+    {
         public double Temp { get; set; }
-        public double Pressure { get; set; }
-        public double Humidity { get; set; }
-        public double TempMin { get; set; }
-        public double TempMax { get; set; }
-        // Weather: Wind
-        public double WindSpeed { get; set; }
-        public double WindDegree { get; set; }
-        // Weather: Clouds
-        public long CloudCover { get; set; }
-        // Weather: Rain
-        public long Rain1Hour { get; set; }
-        public long Rain3Hours { get; set; }
-        // Weather: Snow
-        public long Snow1Hour { get; set; }
-        public long Snow3Hours { get; set; }
-        // Weather: Location
-        public string CityName { get; set; }
-        public string CountryName { get; set; }
-        public long Timezone { get; set; }
-        public long Date { get; set; }
-        public long CoordsLon { get; set; }
-        public long CoordsLat { get; set; }
-        // Weather: Etc.
-        public long Sunrise { get; set; }
-        public long Sunset { get; set; }
+        public double Feels_like { get; set; }
+        public int Pressure { get; set; }
+        public int Humidity { get; set; }
+        public double Temp_min { get; set; }
+        public double Temp_max { get; set; }
+    }
 
-        /// <summary>
-        ///     Default Constructor for this model class. Temporarily added for testing purposes.
-        /// </summary>
-        public WeatherModel()
-        {
-            // Weather: Type
-            this.WeatherTypeID = 0;
-            this.WeatherType = "";
-            this.WeatherDesc = "";
-            this.WeatherIcon = "";
-            // Weather: Main Data Types
-            this.Temp = 0;
-            this.Pressure = 0;
-            this.Humidity = 0;
-            this.TempMin = 0;
-            this.TempMax = 0;
-            // Weather: Wind
-            this.WindSpeed = 0;
-            this.WindDegree = 0;
-            // Weather: Clouds
-            this.CloudCover = 0;
-            // Weather: Rain
-            this.Rain1Hour = 0;
-            this.Rain3Hours = 0;
-            // Weather: Snow
-            this.Snow1Hour = 0;
-            this.Snow3Hours = 0;
-            // Weather: Location
-            this.CityName = "";
-            this.CountryName = "";
-            this.Timezone = 0;
-            this.Date = 0;
-            this.CoordsLon = 0;
-            this.CoordsLat = 0;
-            // Weather: Etc.
-            this.Sunrise = 0;
-            this.Sunset = 0;
-        }
+    /// <summary>
+    ///     Helper model class that is utilized by the main class to store wind data from the API response.
+    /// </summary>
+    public class Wind
+    {
+        public double Speed { get; set; }
+        public int Deg { get; set; }
+    }
 
-        /// <summary>
-        ///     Overloaded constructor for the weather model for future implementation when the api response is converted to a weather model.
-        /// </summary>
-        public WeatherModel(int WTypeID, string WType, string WDesc, string WIcon, double Temp, double Press, double Humid, double TempL, double TempH,
-            double WindSpd, double WindDeg, long Clouds, long Rain1, long Rain3, long Snow1, long Snow3, string City, string Country, long Timezone, long Date,
-            long CoordsLn, long CoordsLt, long Sunr, long Suns)
-        {
-            // Weather: Type
-            this.WeatherTypeID = WTypeID;
-            this.WeatherType = WType;
-            this.WeatherDesc = WDesc;
-            this.WeatherIcon = WIcon;
-            // Weather: Main Data Types
-            this.Temp = 0;
-            this.Pressure = 0;
-            this.Humidity = 0;
-            this.TempMin = 0;
-            this.TempMax = 0;
-            // Weather: Wind
-            this.WindSpeed = 0;
-            this.WindDegree = 0;
-            // Weather: Clouds
-            this.CloudCover = 0;
-            // Weather: Rain
-            this.Rain1Hour = 0;
-            this.Rain3Hours = 0;
-            // Weather: Snow
-            this.Snow1Hour = 0;
-            this.Snow3Hours = 0;
-            // Weather: Location
-            this.CityName = "";
-            this.CountryName = "";
-            this.Timezone = 0;
-            this.Date = 0;
-            this.CoordsLon = 0;
-            this.CoordsLat = 0;
-            // Weather: Etc.
-            this.Sunrise = 0;
-            this.Sunset = 0;
-        }
+    /// <summary>
+    ///     Helper model class that is utilized by the main class to store cloud coverage data from the API response.
+    /// </summary>
+    public class Clouds
+    {
+        public int all { get; set; }
+    }
+
+    /// <summary>
+    ///     Helper model class that is utilized by the main class to store rain data from the API response.
+    /// </summary>
+    public class Rain
+    {
+        public double oneH { get; set; }
+        public double threeH { get; set; }
+    }
+
+    /// <summary>
+    ///     Helper model class that is utilized by the main class to store snow data from the API response.
+    /// </summary>
+    public class Snow
+    {
+        public double oneH { get; set; }
+        public double threeH { get; set; }
+    }
+
+    /// <summary>
+    ///     Helper model class that is utilized by the main class to store location data from a requested area from the API response.
+    /// </summary>
+    public class Sys
+    {
+        public int Type { get; set; }
+        public int Id { get; set; }
+        public double Message { get; set; }
+        public string Country { get; set; }
+        public int Sunrise { get; set; }
+        public int Sunset { get; set; }
     }
 }
