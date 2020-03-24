@@ -1,0 +1,98 @@
+﻿@model RestAPIsApplication.Models.LocationModel
+@{
+    ViewBag.Title = "Current Weather Request Hub";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Declaration of the Current Weather form for a given location in the HttpPost format. -->
+@using (Html.BeginForm("CurrentResult", "OpenWeather", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row" style="padding-top:15px;">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-8">
+            <div class="jumbotron" style="padding-top:20px; padding-bottom:30px; margin-top:20px;">
+                <div class="row justify-content-center">
+                    <h2>Request Current Weather by City:</h2>
+                </div>
+                <div class="row justify-content-center" style="padding-top:10px;">
+                    <!-- Column used for the City input field and its data validation error message in the form. -->
+                    <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5 text-center">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.City, "City Name")
+                            <br />@Html.EditorFor(model => model.City, new { @class = "form-control" })
+                            <br />@Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <!-- Column used for the State input field. No data validation initially required as this will need altering to be only useable for the US. -->
+                    <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5 text-center">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.State, "State Name (US only)")
+                            <br />@Html.EditorFor(model => model.State, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <!-- Form Group used for the regional selection of the location. Decided to use RadioButtons for now. (Out of scope is to turn it into a full
+                     regional dropdown list) -->
+                <div class="form-group">
+                    <div class="row justify-content-center">
+                        @Html.LabelFor(model => model.Country, "Country: ")
+                    </div>
+                    <div class="row">
+                        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 text-center">
+                            US
+                            @Html.RadioButtonFor(model => model.Country, "us")
+                        </div>
+                        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 text-center">
+                            UK
+                            @Html.RadioButtonFor(model => model.Country, "uk")
+                        </div>
+                        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 text-center">
+                            Germany
+                            @Html.RadioButtonFor(model => model.Country, "germany")
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <hr />
+                <!-- Form Group used for the user's preferred measurement system. This tells the program which measurement unit will be used for the data.) -->
+                <div class="form-group">
+                    <div class="row justify-content-center">
+                        @Html.LabelFor(model => model.Units, "Units: ")
+                    </div>
+                    <div class="row">
+                        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 text-center">
+                            Fahrenheit
+                            @Html.RadioButtonFor(model => model.Units, 0)
+                        </div>
+                        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 text-center">
+                            Celsius
+                            @Html.RadioButtonFor(model => model.Units, 1)
+                        </div>
+                        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 text-center">
+                            Kelvin
+                            @Html.RadioButtonFor(model => model.Units, 2)
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        @Html.ValidationMessageFor(model => model.Units, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <hr />
+                <!-- Submit button used to submit the a request for a given location's current weather. -->
+                <div class="row justify-content-center" style="padding-top:10px;">
+                    <input type="submit" class="btn btn-dark" value="Get Current Weather" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+
+        </div>
+    </div>
+}

@@ -4,74 +4,71 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container-fluid">
-    <div class="container-fluid" style="margin-top:40px; text-align:center;">
-        <h1>OpenWeather Current Weather Results:</h1><br />
+<div class="row" style="padding-top:15px;">
+    <div class="col-md-1">
+
     </div>
-
-    <div class="row">
-        <div class="col-md-1">
-
-        </div>
-        <div class="col-md-10">
-            <div class="jumbotron" style="padding-top:30px; padding-bottom:30px;">
-                @{
-                    if (Model != null)
-                    {
-                        <div class="row justify-content-center" style="padding-bottom:20px;">
-                            <h2>Weather in @Model.Name</h2>
-                        </div>
-                    }
+    <div class="col-md-10">
+        <div class="jumbotron" style="padding-top:20px; padding-bottom:30px; margin-top:20px;">
+            <!-- If statement that only shows the Weather Results header if the passed in model is not null. -->
+            @{
+                if (Model != null)
+                {
+                    <div class="row justify-content-center" style="padding-bottom:20px;">
+                        <h2>Weather in @Model.Name</h2>
+                    </div>
                 }
-
-                <div class="row justify-content-center style=" padding-bottom:30px;"">
-                    <p>@ViewBag.Error</p>
-                </div>
-                <div class="row justify-content-center style=" padding-bottom:30px;"">
-                    <button class="btn btn-dark" onclick="location.href='@Url.Action("OpenWeather", "OpenWeather")'">Make another Request</button>
-                </div>
-
-                @{
-                    if (Model != null)
-                    {
-                        <div class="container-fluid" style="border-radius:5px; padding-top:10px; padding-bottom:10px;">
-                            <div class="row justify-content-center">
-                                <div class="col-4 justify-content-center text-center" style="padding-top:5px;">
-                                    <img src="@Model.IconUrl" class="img-fluid bg-white" alt="Weather image" style="border-radius:10px; border:1px solid; border-color:#343a40;">
-                                    @Model.Weather[0].Main: @Model.Weather[0].Description
-                                </div>
-                                <div class="col-2 justify-content-center" style="margin-top:10px; padding:5px;">
-                                    <p>Temperature: @Model.Main.Temp&deg;</p>
-                                </div>
-                                <div class="col-2 justify-content-center" style="margin-top:10px; padding:5px;">
-                                    <p>Feels Like: @Model.Main.Feels_like&deg;</p>
-                                </div>
-                                <div class="col-2 justify-content-center" style="margin-top:10px; padding:5px;">
-                                    <p>Pressure: @Model.Main.Pressure hpa</p>
-                                </div>
-                                <div class="col-2 justify-content-center" style="margin-top:10px; padding:5px;">
-                                    <p>Humidity: @Model.Main.Humidity%</p>
-                                </div>
-                            </div>
-                            <hr />
-                            <div class="row justify-content-center text-center">
-                                <div class="col-4 justify-content-center" style="margin-top:10px; padding:5px;">
-                                    <p>Wind Speed: @Model.Wind.Speed m/s or mph</p>
-                                </div>
-                                <div class="col-4 justify-content-center" style="margin-top:10px; padding:5px;">
-                                    <p>Wind Direction: @Model.Wind.Deg&deg;</p>
-                                </div>
-                                <div class="col-4 justify-content-center" style="margin-top:10px; padding:5px;">
-                                    <p>Cloud Coverage: @Model.Clouds.all%</p>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                }
+            }
+            <!-- Button and text that always are loaded to display error messages to the user and allow them to go back to request more current weather data. -->
+            <div class="row justify-content-center style=" padding-bottom:30px;"">
+                <button class="btn btn-dark" onclick="location.href='@Url.Action("CurrentWeather", "OpenWeather")'">Make another Request</button>
             </div>
+            <!-- If statement that only shows the Weather Results data if the passed in model is not null. -->
+            @{
+                if (Model != null)
+                {
+                    <div class="container-fluid" style="border-radius:5px; padding-top:10px; padding-bottom:10px;">
+                        <div class="row justify-content-center">
+                            <!-- Column used to display Openweather's weather icon along with the type and description of the current weather in a location. -->
+                            <div class="col-4 justify-content-center text-center" style="padding-top:5px;">
+                                <img src="@Model.IconUrl" class="img-fluid bg-white" alt="Weather image" style="border-radius:10px; border:1px solid; border-color:#343a40;">
+                                @Model.Weather[0].Main: @Model.Weather[0].Description
+                            </div>
+                            <!-- Two columns used to display the current temperature and percieved temperature in a given location. -->
+                            <div class="col-2 justify-content-center" style="margin-top:10px; padding:5px;">
+                                <p>Temperature: @Model.Main.Temp&deg;</p>
+                            </div>
+                            <div class="col-2 justify-content-center" style="margin-top:10px; padding:5px;">
+                                <p>Feels Like: @Model.Main.Feels_like&deg;</p>
+                            </div>
+                            <!-- Two columns used to display the current pressure and humidity in a given location. -->
+                            <div class="col-2 justify-content-center" style="margin-top:10px; padding:5px;">
+                                <p>Pressure: @Model.Main.Pressure hpa</p>
+                            </div>
+                            <div class="col-2 justify-content-center" style="margin-top:10px; padding:5px;">
+                                <p>Humidity: @Model.Main.Humidity%</p>
+                            </div>
+                        </div>
+                        <hr />
+                        <!-- Two columns used to display the current wind speed and direction in a given location. -->
+                        <div class="row justify-content-center text-center">
+                            <div class="col-4 justify-content-center" style="margin-top:10px; padding:5px;">
+                                <p>Wind Speed: @Model.Wind.Speed m/s or mph</p>
+                            </div>
+                            <div class="col-4 justify-content-center" style="margin-top:10px; padding:5px;">
+                                <p>Wind Direction: @Model.Wind.Deg&deg;</p>
+                            </div>
+                            <!-- Column used to display the current cloud coverage in a given location. -->
+                            <div class="col-4 justify-content-center" style="margin-top:10px; padding:5px;">
+                                <p>Cloud Coverage: @Model.Clouds.all%</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
         </div>
-        <div class="col-md-1">
+    </div>
+    <div class="col-md-1">
 
-        </div>
     </div>
 </div>

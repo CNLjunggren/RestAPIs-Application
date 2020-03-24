@@ -1,22 +1,29 @@
 ﻿using RestAPIsApplication.Models;
 using RestAPIsApplication.Services.Business;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
 
 namespace RestAPIsApplication.Controllers
 {
+    //[Authorize]
     public class OpenWeatherController : Controller
     {
+        // Instanciates the OpenWeather api service class.
+        private readonly ApiOWService service = new ApiOWService();
+
         /// <summary>
-        ///     Controller method that returns the Current Weather Page to the user.
+        ///     Controller method that returns the Current Weather request page to the user.
         /// </summary>
         /// <returns> View() </returns>
         [HttpGet]
-        public ActionResult OpenWeather()
+        public ActionResult CurrentWeather()
         {
-            return View();
+            // Checks if the user is logged in.
+            if (Session["UserID"] != null)
+                return View();
+            else
+                return RedirectToAction("Login", "User");
         }
 
         /// <summary>
@@ -34,31 +41,50 @@ namespace RestAPIsApplication.Controllers
         [HttpPost]
         public ActionResult CurrentResult(LocationModel location)
         {
-            /* Checks if the submitted current weather data request is invalid data. If invalid data is found, the user is redirected to the same page so error
-             * the user is shown data validation error messages. */
-            if (!ModelState.IsValid)
+            // Checks if the user is logged in.
+            if (Session["UserID"] != null)
             {
-                return RedirectToAction("OpenWeather", "OpenWeather");
-            }
-            // Instanciates the OpenWeather api service class.
-            ApiOWService service = new ApiOWService();
+                    /* Checks if the submitted current weather data request is invalid data. If invalid data is found, the user is redirected to the same page so error
+                     * the user is shown data validation error messages. */
+                    if (!ModelState.IsValid)
+                    {
+                        return RedirectToAction("OpenWeather", "OpenWeather");
+                    }
 
-            /* Attempts to call the business service in order for the application to call the OpenWeather API and retrieve the results of the current
-             * location requested by the user. */
-            try
-            {
-                WeatherModel apiResponse = service.CallCurrent(location);
-                /* If no exceptions are thrown then the API's weather icon url is created using the weather response's icon #. This response weather model is then
-                 * returned along the CurrentResult view. */
-                apiResponse.IconUrl = "http://openweathermap.org/img/wn/" + apiResponse.Weather[0].Icon.ToString() + ".png";
-                return View(apiResponse);
-            }
-            catch(WebException wE)
-            {
-                ViewBag.Error = "Current Weather could not be found at the given location. Please ensure you entered a valid location and try again.";
-                Console.WriteLine(ViewBag.Error);
+                    /* Attempts to call the business service in order for the application to call the OpenWeather API and retrieve the results of the current
+                     * location requested by the user. */
+                    try
+                    {
+                        WeatherModel apiResponse = service.CallCurrent(location);
+                        /* If no exceptions are thrown then the API's weather icon url is created using the weather response's icon #. This response weather model is then
+                         * returned along the CurrentResult view. */
+                        apiResponse.IconUrl = "http://openweathermap.org/img/wn/" + apiResponse.Weather[0].Icon.ToString() + ".png";
+                        return View(apiResponse);
+                    }
+                    catch (WebException wE)
+                    {
+                        Console.WriteLine(wE);
+                    //ViewBag.Error = "Current Weather could not be found at the given location. Please ensure you entered a valid location and try again.";
+                    TempData["Error"] = "Current Weather could not be found at the given location. Please ensure you entered a valid location and try again.";
+                    return RedirectToAction("CurrentWeather", "OpenWeather");
+                    }
+                }
+            else
+                return RedirectToAction("Login", "User");
+        }
+
+        /// <summary>
+        ///     Controller method that returns the Weather Forcast request page to the user.
+        /// </summary>
+        /// <returns> View() </returns>
+        [HttpGet]
+        public ActionResult WeatherForecast()
+        {
+            // Checks if the user is logged in.
+            if (Session["UserID"] != null)
                 return View();
-            }
+            else
+                return RedirectToAction("Login", "User");
         }
     }
 }

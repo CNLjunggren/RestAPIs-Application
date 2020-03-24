@@ -1,0 +1,88 @@
+﻿@model RestAPIsApplication.Models.UserModel
+@{
+    ViewBag.Title = "Register User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Credit to Rion William for his solution for Hmtl.EditorFar razor tag functionality with the jQuery UI (Combined Library) Nuget package's DateTimePicker.
+     Source: https://forums.asp.net/t/1975676.aspx?Tutorial+for+Adding+Datepicker+in+MVC+5 -->
+
+<style>
+    .input-custom-register input {
+        width: 600px;
+        max-width: 800px;
+    }
+</style>
+
+<!-- Declaration of the Current Weather form for a given location in the HttpPost format. -->
+@using (Html.BeginForm("RegisterUser", "User", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row" style="padding-top:15px;">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-8">
+            <div class="jumbotron" style="padding-bottom:30px; margin-top:20px;">
+                <div class="row justify-content-center">
+                    <h2>Register as a new user:</h2>
+                </div>
+                <!-- Row used for the Email Address input field and its data validation error message in the form. -->
+                <div class="row text-center justify-content-center">
+                    <div class="form-group input-custom-register">
+                        @Html.LabelFor(model => model.Email, "Email Address")
+                        <br />@Html.EditorFor(model => model.Email, new { @class = "form-control" })
+                        <br />@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <!-- Row used for the Username/Email Address input field and its data validation error message in the form. -->
+                <div class="row text-center justify-content-center">
+                    <div class="form-group input-custom-register">
+                        @Html.LabelFor(model => model.Username, "Username")
+                        <br />@Html.EditorFor(model => model.Username, new { @class = "form-control" })
+                        <br />@Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <!-- Row used for the Password input field and its data validation error message in the form. -->
+                <div class="row text-center justify-content-center">
+                    <div class="form-group input-custom-register">
+                        @Html.LabelFor(model => model.Password, "Password")
+                        <br />@Html.EditorFor(model => model.Password, new { @class = "form-control" })
+                        <br />@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <hr />
+                <!-- Row used for the Date of Birth selection and its data validation error message in the form. -->
+                <div class="row text-center justify-content-center">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BirthDate, "Birth Date")
+                        <br />@Html.EditorFor(model => model.BirthDate, new { @class = "date-picker form-control" })
+                        <br />@Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <hr />
+                <!-- Submit button used to submit the a request for a given location's current weather. -->
+                <div class="row justify-content-center" style="padding-top:10px;">
+                    <input type="submit" class="btn btn-dark" value="Sign Up" />
+                </div>
+                <hr />
+                <div class="row justify-content-center style=" padding-bottom:30px;"">
+                    <label style="padding-right:15px; margin-top:5px;">Already a member?</label>
+                    <button class="btn btn-dark btn-sm" onclick="location.href='@Url.Action("Login", "User")'">Login</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+
+        </div>
+    </div>
+}
+
+<!-- Code to wire up your DatePicker -->
+<script type="text/javascript">
+    $(function () {
+        // This will make every element with the class "date-picker" into a DatePicker element
+        $('#BirthDate').datepicker();
+    })
+</script>

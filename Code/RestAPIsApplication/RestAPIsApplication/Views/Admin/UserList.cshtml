@@ -1,0 +1,44 @@
+﻿@model Tuple<List<RestAPIsApplication.Models.UserModel>, RestAPIsApplication.Models.UserModel>
+@{
+    ViewBag.Title = "Current Weather Results";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-top:15px;">
+    <div class="col-md-1">
+
+    </div>
+    <div class="col-md-10">
+        <button class="btn btn-dark row" onclick="location.href='@Url.Action("UserList", "Admin")'">Refresh Page</button>
+        <div class="jumbotron" style="padding-top:20px; padding-bottom:30px; margin-top:20px;">
+            <div class="row">
+                <table class="table">
+                    <thread>
+                        <tr>
+                            <th scope="col">User ID</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email Address</th>
+                            <th scope="col">Admin</th>
+                            <th scope="col">Birth Date</th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                        @foreach (var user in Model.Item1)
+                        {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => user.Id)</td>
+                            <td>@Html.DisplayFor(modelItem => user.Username)</td>
+                            <td>@Html.DisplayFor(modelItem => user.Email)</td>
+                            <td>@Html.DisplayFor(modelItem => user.Role)</td>
+                            <td>@Html.DisplayFor(modelItem => user.BirthDate)</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1">
+
+    </div>
+</div>
