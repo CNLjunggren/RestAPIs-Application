@@ -71,6 +71,7 @@ namespace RestAPIsApplication.Models
         /// </summary>
         public UserModel(int Id, string User, string Pass, string Email, int Role, DateTime Date)
         {
+            this.Id = Id;
             this.Username = User;
             this.Password = Pass;
             this.Email = Email;

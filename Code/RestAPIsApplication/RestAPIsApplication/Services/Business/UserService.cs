@@ -39,7 +39,7 @@ namespace RestAPIsApplication.Services.Business
         }
 
         /// <summary>
-        /// 
+        ///     Calls the User DAO to make an attempt to log the user into the application.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
@@ -58,6 +58,10 @@ namespace RestAPIsApplication.Services.Business
             return dao.RegisterUser(user);
         }
 
+        /// <summary>
+        ///     Calls the User DAO to retrieve a list of all users in the DB.
+        /// </summary>
+        /// <returns> List<UserModel> users </returns>
         public List<UserModel> FindAllUsers()
         {
             return dao.FindAllUsers();

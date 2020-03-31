@@ -294,6 +294,7 @@
     <Compile Include="Services\Business\AdminService.cs" />
     <Compile Include="Services\Business\ApiOWService.cs" />
     <Compile Include="Services\Business\UserService.cs" />
+    <Compile Include="Services\Data\AdminDao.cs" />
     <Compile Include="Services\Data\ApiOWDao.cs" />
     <Compile Include="Services\Data\UserDao.cs" />
     <Compile Include="Utilities\UserParseException.cs" />
@@ -321,6 +322,7 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
     <Content Include="Views\Admin\UserList.cshtml" />
+    <Content Include="Views\Admin\DeleteUser.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

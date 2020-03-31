@@ -55,11 +55,19 @@ namespace RestAPIsApplication.Controllers
                 if (userExists == true)
                 {
                     user = service.LoginUser(user);
-                    // Creates a Session for the user on successful login.
-                    Session["UserId"] = user.Id.ToString();
-                    Session["Username"] = user.Username.ToString();
-                    Session["Role"] = user.Role.ToString();
-                    return RedirectToAction("Index", "Home");
+                    if (user.Id > 0)
+                    {
+                        // Creates a Session for the user on successful login.
+                        Session["UserId"] = user.Id.ToString();
+                        Session["Username"] = user.Username.ToString();
+                        Session["Role"] = user.Role.ToString();
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        TempData["Error"] = "No user with the given Username and/or Password exists.";
+                        return RedirectToAction("Login", "User");
+                    }
                 }
                 else
                 {

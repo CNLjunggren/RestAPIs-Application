@@ -10,7 +10,7 @@ namespace RestAPIsApplication.Services.Data
     public class UserDao
     {
         /// <summary>
-        ///     Modular method used to privately store the database's connection string and consturct a Dao service's SqlConnection.
+        ///     Modular method that privately store the database's connection string and consturct a Dao service's SqlConnection.
         /// </summary>
         /// <param name="query"></param>
         /// <returns> cn (SqlConnection) </returns>
@@ -22,7 +22,7 @@ namespace RestAPIsApplication.Services.Data
         }
 
         /// <summary>
-        ///     Modular method used to private consturct a Dao service's SqlCommand.
+        ///     Modular method used to private construct a Dao service's SqlCommand.
         /// </summary>
         /// <param name="query"></param>
         /// <param name="cn"></param>
@@ -78,12 +78,16 @@ namespace RestAPIsApplication.Services.Data
             }
         }
 
+        /// <summary>
+        ///     Called on to pull all users from the database
+        /// </summary>
+        /// <returns> List<UserModel> users </UserModel> </returns>
         public List<UserModel> FindAllUsers()
         {
             // Instanciates a list for all playlists.
             List<UserModel> users = new List<UserModel>();
 
-            // 
+            // Attempts to connect to the database and pull all users from the database into a list.
             try
             {
                 string query = "SELECT * FROM [dbo].[User]";
@@ -94,7 +98,7 @@ namespace RestAPIsApplication.Services.Data
                     // Open the connection
                     cn.Open();
 
-                    // Utilizes a DataReader to pull all users from the database.
+                    // Attempts to utilize a DataReader to pull all users from the database.
                     try
                     {
                         SqlDataReader read = cmd.ExecuteReader();
@@ -109,28 +113,29 @@ namespace RestAPIsApplication.Services.Data
                                 {
                                     parsedDate = parseDate;
                                 }
+                                // If it cannot be parsed, an exception is thrown.
                                 else
                                 {
                                     throw new UserParseException(read["BirthDate"].ToString());
                                 }
 
+                                // Adds the given user model to the list of users.
                                 users.Add(new UserModel(int.Parse(read["Id"].ToString()),
                                                                   read["Username"].ToString(),
-                                                                  "Password", "Email", 
+                                                                  "Password", "Email",
                                                                   int.Parse(read["Role"].ToString()),
                                                                   parsedDate));
                             }
                         }
                     }
+                    // Catches all exceptions that may occur in this process.
                     catch (SqlException SqlEx)
                     {
-                        // TODO: should log exception and then throw a custom exception
                         Console.WriteLine(SqlEx);
                         throw SqlEx;
                     }
                     catch (Exception Ex)
                     {
-                        // TODO: should log exception and then throw a custom exception
                         Console.WriteLine(Ex);
                         throw Ex;
                     }
@@ -150,15 +155,16 @@ namespace RestAPIsApplication.Services.Data
         }
 
         /// <summary>
-        /// 
+        ///     Called to make the checks nessesary for logging a user into the site and pulling their information.
         /// </summary>
         /// <param name="user"></param>
-        /// <returns></returns>
+        /// <returns> Usermodel user </returns>
         public UserModel LoginUser(UserModel user)
         {
+            // Creates a query that will select any users with the given username/email address and password.
             string query = "SELECT * FROM [dbo].[User] WHERE Username = @Username AND Password = @Password OR Email = @Email AND Password = @Password";
-            //string query = "SELECT * FROM [dbo].[User] WHERE Username = @Username AND Password = @Password";
 
+            // Attempts to connect to the database and run the query, pulling the data for the application and user session.
             try
             {
                 // Create connection and command
@@ -172,10 +178,11 @@ namespace RestAPIsApplication.Services.Data
 
                     // Open the connection
                     cn.Open();
-
+                    // Attempts to utilize a data reader to read and parse the user data into a user model.
                     try
                     {
                         SqlDataReader read = cmd.ExecuteReader();
+                        // While reading, checks for any user data and pulls the given information.
                         while(read.Read())
                         {
                             if(read.HasRows)
@@ -196,11 +203,13 @@ namespace RestAPIsApplication.Services.Data
                             }
                         }
                     }
+                    // Catches any Exceptions that may occur during the process.
                     catch (Exception e)
                     {
                         Console.WriteLine("Error processing user data.");
                         throw e;
                     }
+                    // Closes the connection before returning the usermodel.
                     finally
                     {
                         cn.Close();
@@ -229,8 +238,10 @@ namespace RestAPIsApplication.Services.Data
         /// <returns> int result (OR SqlException is thrown) </returns>
         public int RegisterUser(UserModel user)
         {
+            // Creates a query that will insert the user into the database.
             string query = "INSERT INTO [dbo].[User] VALUES(@Username,@Password,@Email,@Role,@BirthDate)";
 
+            // Attempts to connect to the database and run the query, registering the user by adding them to the database.
             try
             {
                 // Create connection and command
@@ -246,20 +257,20 @@ namespace RestAPIsApplication.Services.Data
                     // Open the connection
                     cn.Open();
 
+                    // Runs the query and parses the result. Closes the connection and then returns the result.
                     int result = cmd.ExecuteNonQuery();
                     cn.Close();
                     return result;
                 }
             }
+            // Catches all exceptions that may occur during this process.
             catch (SqlException SqlEx)
             {
-                // TODO: should log exception and then throw a custom exception
                 Console.WriteLine(SqlEx);
                 throw SqlEx;
             }
             catch (Exception Ex)
             {
-                // TODO: should log exception and then throw a custom exception
                 Console.WriteLine(Ex);
                 throw Ex;
             }

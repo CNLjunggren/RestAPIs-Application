@@ -25,13 +25,37 @@
                     <tbody>
                         @foreach (var user in Model.Item1)
                         {
-                        <tr>
-                            <td>@Html.DisplayFor(modelItem => user.Id)</td>
-                            <td>@Html.DisplayFor(modelItem => user.Username)</td>
-                            <td>@Html.DisplayFor(modelItem => user.Email)</td>
-                            <td>@Html.DisplayFor(modelItem => user.Role)</td>
-                            <td>@Html.DisplayFor(modelItem => user.BirthDate)</td>
-                        </tr>
+                            using (Html.BeginForm("DeleteUser", "Admin", FormMethod.Post))
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => user.Id)
+                                        @Html.HiddenFor(modelItem => user.Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => user.Username)
+                                        @Html.HiddenFor(modelItem => user.Username)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => user.Email)
+                                        @Html.HiddenFor(modelItem => user.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => user.Role)
+                                        @Html.HiddenFor(modelItem => user.Role)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => user.BirthDate)
+                                        @Html.HiddenFor(modelItem => user.BirthDate)
+                                    </td>
+                                    <td>
+                                        @if (user.Role != 1)
+                                        {
+                                            <input type="submit" class="btn btn-dark" value="Delete" />
+                                        }
+                                    </td>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>

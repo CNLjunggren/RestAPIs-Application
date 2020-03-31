@@ -21,8 +21,7 @@ namespace RestAPIsApplication.Services.Data
         private WeatherModel weather;
 
         /// <summary>
-        ///     A method called upon by other methods to construct the correct HttpWebRequest for their appropiate call. Currently only supports the "Current
-        ///     Weather" api.
+        ///     Called upon by other methods to construct the correct HttpWebRequest for their appropiate call. Currently only supports the "Current Weather" api.
         /// </summary>
         /// <param name="location"></param>
         /// <returns> string apiRequest </returns>
@@ -56,9 +55,8 @@ namespace RestAPIsApplication.Services.Data
         }
 
         /// <summary>
-        ///     DAO method that takes takes in location model from the business service and attempts to create a HttpWebRequest, call the api, read the api's
-        ///     reponse, and then return the result as a string for now.
-        /// </summary>
+        ///     Takes the location model from the business service and attempts to create a HttpWebRequest, call the api, read the api's reponse, and then return 
+        ///     the result as a string for now.
         /// </summary>
         /// <param name="location"></param>
         /// <returns> string apiResponse </returns>

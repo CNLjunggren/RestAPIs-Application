@@ -1,0 +1,60 @@
+﻿@model RestAPIsApplication.Models.UserModel
+@{
+    ViewBag.Title = "Delete User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-top:15px;">
+    <div class="col-md-1">
+
+    </div>
+    <div class="col-md-10">
+        <button class="btn btn-dark row" onclick="location.href='@Url.Action("DeleteUser", "Admin")'">Refresh Page</button>
+        <div class="jumbotron" style="padding-top:20px; padding-bottom:30px; margin-top:20px;">
+            <div class="row">
+                <table class="table">
+                    <thread>
+                        <tr>
+                            <th scope="col">User ID</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email Address</th>
+                            <th scope="col">Admin</th>
+                            <th scope="col">Birth Date</th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                        <tr>
+                            @using (Html.BeginForm("DeletingUser", "Admin", FormMethod.Post))
+                            {
+                                <td>
+                                    @Html.DisplayFor(model => model.Id)
+                                    @Html.HiddenFor(model => model.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.Username)
+                                    @Html.HiddenFor(model => model.Username)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.Email)
+                                    @Html.HiddenFor(model => model.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.Role)
+                                    @Html.HiddenFor(model => model.Role)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.BirthDate)
+                                    @Html.HiddenFor(model => model.BirthDate)
+                                </td>
+                                <td>Are you sure you want to delete this user? <input type="submit" class="btn btn-dark" value="Delete" /></td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1">
+
+    </div>
+</div>

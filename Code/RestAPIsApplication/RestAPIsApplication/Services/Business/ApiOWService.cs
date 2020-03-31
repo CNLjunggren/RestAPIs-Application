@@ -11,7 +11,7 @@ namespace RestAPIsApplication.Services.Business
         private ApiOWDao dao = new ApiOWDao();
 
         /// <summary>
-        ///     This method is called with passed down location data so it can make the appropiate dao call method to request the current weather from OpenWeather's
+        ///     Called with passed down location data so it can make the appropiate dao call method to request the current weather from OpenWeather's
         ///     API. This method then returns the api's resposne back to the OpenWeather controller.
         /// </summary>
         /// <param name="location"></param>
